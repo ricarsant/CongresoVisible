@@ -18,7 +18,7 @@ var encabezados1 =["ddd","eee"];
 var filedsToD3 =[];
 var encabezados =[];
 var datosnew={};
- </script
+ </script>
  
  
 	</head>
@@ -57,7 +57,7 @@ cámaras Representantes, como también los presentados por cámaras mixtas
 	   
 	  	  
 	
-	<!-- CODIGO ANGULAR --->
+	<!-- CODIGO ANGULAR -->
 	
 	<script>
 	var globalarray=[];
@@ -120,17 +120,22 @@ var myapp = angular.module('sortableApp', ['ui.sortable', 'ui.sortable.multisele
   
 
 myapp.controller('sortableController', function ($scope, uiSortableMultiSelectionMethods) {
-  var tmpList = ["comision_entrante", "iniciativa", "estado_actual", "id_proyecto", "titulo", "fecha_radicacion"];
+  var tmpList1 = ["comision_entrante", "iniciativa", "estado_actual", "id_proyecto", "titulo", "fecha_radicacion"];
+    var tmpList =[];
   
   
  if(globalarray.length>0){
  tmpList=[];
+ }else { 
+   globalarray =tmpList1;
+   }
+ 
   for(i=0;i<globalarray.length;i++){
     var elemento = globalarray[i];
     console.log("elemneto", elemento);
     tmpList.push({text: elemento, value:i});
   }
-  }
+  
  
   $scope.list = tmpList;  
   $scope.sortingLog = [];
@@ -201,7 +206,7 @@ function responseTest(list) {
 </div>
 
 	
-	<!-- FIN CODIGO ANGULAR --->
+	<!-- FIN CODIGO ANGULAR -->
 	
 	 
 	
