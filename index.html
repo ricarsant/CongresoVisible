@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>   
+	
 		 <link rel="stylesheet" href="index.css">
 
 
 		 <meta charset="utf-8">
+		 
+	<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>   	 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
+  <script src="https://rawgithub.com/angular-ui/ui-sortable/master/src/sortable.js"></script>
+  <script src="https://rawgit.com/thgreasi/ui-sortable-multiselection/master/src/ui.sortable.multiselection.js"></script>
+<script>
+var encabezados1 =["ddd","eee"];
+var filedsToD3 =[];
+var encabezados =[];
+var datosnew={};
+ </script
+ 
+ 
 	</head>
 	
 	<body>
@@ -19,20 +34,179 @@
         https://www.congresovisible.org/
     </a>
 	<p>
-	   En este diagrama de arbol se visualiza los proyectos presentados por los difrentes camaras del senado, 
-	camaras Representantes, como tambien  los presentados por camaras mixtas
+	  En este diagrama de árbol se visualiza los proyectos presentados por los diferentes cámaras del senado, 
+cámaras Representantes, como también los presentados por cámaras mixtas
+
 	</p>
 	<p>
 	Los proyectos se pueden localizar por comision entrante, tipo de iniciativa y estado actual del proyecto.
 	</p>
 	<hr>
 	</p>
+	
 	 <span></span>
-	   <div id="selecion"></div>
+	 <output id="fechamarca" class="item1"></output>
+	 
+	 
+	
+	 
+	<div id="selecion"></div>
 	    <svg id="svg" width="2000" height="850" class="grafica"></svg>
-	  <script src="senado.js"></script> 
+		 
+	  <script src="senado.js"></script>
+	   
 	  	  
-	<p>
+	
+	<!-- CODIGO ANGULAR --->
+	
+	<script>
+	var globalarray=[];
+		  
+		  console.log("haberr", encabezados);
+		  function  recive(arreglo){
+		  
+		  globalarray = arreglo;
+		  console.log("Funcion Recive: encabezados de d3 a Angular. En Angular",arreglo);
+		  
+		  }
+		  </script>
+	
+	<div ng-app="sortableApp" ng-controller="sortableController" class = "container" >
+	
+  <div class="floatleft">
+  
+  
+    <div ui-sortable="sortableOptions" ng-model="list" class="list logList">
+	
+	
+      <div ui-sortable-selectable ng-repeat="item in list" class="item">
+      {{item.text}}
+      </div>
+	  <p>
+	  <div class="floatcenter">
+	 <input type="button" value="Mostrar" ng-click="procesarClic()" class="button">
+	 </div>
+	  <p>
+	
+    </div>
+	
+	  
+
+	  </div>
+	  
+	  <div  class="floatright logList1">
+
+  <label>Encontrar: <input type="text" id="filterInput"  style="width:500px;height:20px" class="item1"></label>
+  <input type="submit" value="Buscar" onClick="buscaProyecto()"  class="button">
+  <p>
+  <p>
+  Id Iniciativa:
+  <p>
+  <output id="enceuntra" class="item1"></output>
+</div>
+
+
+  <div class="clear"></div>
+
+
+  
+<script>
+
+
+//var globalarray=["uno", "dos", "tres","uatro"];
+var salidadadtos =[];
+  
+var myapp = angular.module('sortableApp', ['ui.sortable', 'ui.sortable.multiselection']);
+  
+
+myapp.controller('sortableController', function ($scope, uiSortableMultiSelectionMethods) {
+  var tmpList = ["comision_entrante", "iniciativa", "estado_actual", "id_proyecto", "titulo", "fecha_radicacion"];
+  
+  
+ if(globalarray.length>0){
+ tmpList=[];
+  for(i=0;i<globalarray.length;i++){
+    var elemento = globalarray[i];
+    console.log("elemneto", elemento);
+    tmpList.push({text: elemento, value:i});
+  }
+  }
+ 
+  $scope.list = tmpList;  
+  $scope.sortingLog = [];
+  
+  $scope.sortableOptions = uiSortableMultiSelectionMethods.extendOptions({
+    stop: function(e, ui) {
+      // this callback has the changed model
+      var logEntry = tmpList.map(function(i){
+        return i.value;
+      }).join(', ');
+      
+      $scope.sortingLog.push('Stop: ' + logEntry);
+  	  arreglado = $scope.sortingLog;
+
+      
+      //Llamar la funcion de javascript y pasarle la lista
+     // responseTest($scope.sortingLog);
+    }
+  });
+  
+  // bonus: listen for sortable item selections
+  angular.element('[ui-sortable]').on('ui-sortable-selectionschanged', function (e, args) {
+    console.log("entra");
+    var $this = $(this);
+    var selectedItemIndexes = $this.find('.ui-sortable-selected')
+    .map(function(i, element){
+      return $(this).index();
+    })
+    .toArray();
+    console.log("selectedItemIndexes",selectedItemIndexes);
+    
+    var selectedItems = $.map(selectedItemIndexes, function(i) {
+      return $scope.list[i]
+    });
+	  console.log("lista",  $scope.list);
+    list = $scope.list;
+	//responseTest(list);
+  });
+  
+  $scope.procesarClic = function(){
+  
+ // responseTest($scope.list);
+  
+  dAngular($scope.list);
+ // alert("yess");
+  }
+ // salidadadtos = $scope.list;
+});
+  
+
+
+/*JavaScript*/
+
+//Funcion que recibe la llamada de Angular y muestra la lista
+/*
+function responseTest(list) {
+  console.log("Llego******* ", list);
+  //filedsToD3 = list;
+  dAngular(list);
+}
+*/
+
+
+  </script>
+  
+ 
+  
+</div>
+
+	
+	<!-- FIN CODIGO ANGULAR --->
+	
+	 
+	
+	
+	
 	<p><strong>Abstracci&oacute;n WHAT- WHY &ndash; HOW :</strong></p>
 <p>&nbsp;</p>
 <p>Descripci&oacute;n de acuerdo con FrameWork de Tamara Munzner:</p>
